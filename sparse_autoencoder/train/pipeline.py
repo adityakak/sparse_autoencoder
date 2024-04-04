@@ -208,7 +208,7 @@ class Pipeline:
         activations_dataloader = DataLoader(
             activation_store, batch_size=train_batch_size, num_workers=4, persistent_workers=False
         )
-
+        print("Activations DataLoader Formed")
         # Setup the trainer with no console logging
         logging.getLogger("lightning.pytorch.utilities.rank_zero").setLevel(logging.WARNING)
         trainer = Trainer(
