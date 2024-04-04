@@ -234,6 +234,8 @@ class Pipeline:
             activation_store,
             batch_size=train_batch_size,
         )
+        
+        print("DataLoader created")
 
         learned_activations_fired_count: Int64[
             Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
