@@ -8,7 +8,7 @@ class ResetOptimizerParameterDetails(NamedTuple):
     """Reset Optimizer Parameter Details.
 
     Details of a parameter that should be reset in the optimizer, when resetting
-    its corresponding dictionary vectors.
+    it's corresponding dictionary vectors.
     """
 
     parameter: Parameter

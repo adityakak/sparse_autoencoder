@@ -1,8 +1,13 @@
 """Tests for sweep functionality."""
+
 import pytest
 from syrupy.session import SnapshotSession
 
-from sparse_autoencoder.train.sweep import setup_autoencoder
+from sparse_autoencoder.train.sweep import (
+    setup_activation_resampler,
+    setup_autoencoder_optimizer_scheduler,
+    setup_loss_function,
+)
 from sparse_autoencoder.train.sweep_config import (
     RuntimeHyperparameters,
 )
@@ -61,9 +66,27 @@ def dummy_hyperparameters() -> RuntimeHyperparameters:
     }
 
 
+def test_setup_activation_resampler(
+    dummy_hyperparameters: RuntimeHyperparameters, snapshot: SnapshotSession
+) -> None:
+    """Test the setup_activation_resampler function."""
+    activation_resampler = setup_activation_resampler(dummy_hyperparameters)
+    assert snapshot == str(
+        activation_resampler
+    ), "Activation resampler string representation has changed."
+
+
 def test_setup_autoencoder(
     dummy_hyperparameters: RuntimeHyperparameters, snapshot: SnapshotSession
 ) -> None:
     """Test the setup_autoencoder function."""
-    autoencoder = setup_autoencoder(dummy_hyperparameters)
+    autoencoder, _, _ = setup_autoencoder_optimizer_scheduler(dummy_hyperparameters)
     assert snapshot == str(autoencoder), "Autoencoder string representation has changed."
+
+
+def test_setup_loss_function(
+    dummy_hyperparameters: RuntimeHyperparameters, snapshot: SnapshotSession
+) -> None:
+    """Test the setup_loss_function function."""
+    loss_function = setup_loss_function(dummy_hyperparameters)
+    assert snapshot == str(loss_function), "Loss function string representation has changed."
