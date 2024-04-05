@@ -367,7 +367,7 @@ class Pipeline:
 
         print("Components:", len(self.cache_names))
         for component_idx, cache_name in tqdm(enumerate(self.cache_names), desc="Processing components"):
-            print("Batches:", len(losses.shape[0]))
+            print("Batches:", losses.shape[0])
             for batch_idx in tqdm(range(losses.shape[0]), desc="Processing batches"):
                 batch = next(self.source_data)
 
