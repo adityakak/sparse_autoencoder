@@ -188,6 +188,7 @@ class Pipeline:
 
         # Setup the store
         source_model_device: torch.device = get_model_device(self.source_model)
+        print("Source model device:", source_model_device)
         store = TensorActivationStore(
             store_size, self.n_input_features, n_components=self.n_components
         )
@@ -349,7 +350,9 @@ class Pipeline:
             validation_n_activations // self.source_data_batch_size,
             self.n_components,
         )
+        self.source_model = self.source_model.to(device='cuda')
         source_model_device: torch.device = get_model_device(self.source_model)
+        print("Source model device:", source_model_device)
 
         # Create the metric data stores
         losses: Float[Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)] = torch.empty(
