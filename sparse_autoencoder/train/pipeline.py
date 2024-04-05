@@ -230,6 +230,8 @@ class Pipeline:
         """
         autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
+        print("Autoencoder device:", autoencoder_device)
+
         activations_dataloader = DataLoader(
             activation_store,
             batch_size=train_batch_size,
@@ -245,7 +247,9 @@ class Pipeline:
             device=torch.device("cpu"),
         )
 
-        for store_batch in activations_dataloader:
+        print("Starting training loop")
+
+        for store_batch in tqdm(activations_dataloader):
             # Zero the gradients
             self.optimizer.zero_grad()
 
