@@ -238,7 +238,6 @@ class Pipeline:
             batch_size=train_batch_size,
         )
         
-
         learned_activations_fired_count: Int64[
             Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
         ] = torch.zeros(
