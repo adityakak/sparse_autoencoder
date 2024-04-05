@@ -350,7 +350,7 @@ class Pipeline:
             validation_n_activations // self.source_data_batch_size,
             self.n_components,
         )
-        self.source_model = self.source_model.to(device='cuda')
+        # self.source_model = self.source_model.to(device='cuda')
         source_model_device: torch.device = get_model_device(self.source_model)
         print("Source model device:", source_model_device)
 
@@ -365,13 +365,15 @@ class Pipeline:
             Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
         ] = torch.empty(losses_shape, device=source_model_device)
 
-        for component_idx, cache_name in enumerate(self.cache_names):
-            for batch_idx in range(losses.shape[0]):
+        for component_idx, cache_name in tqdm(enumerate(self.cache_names), desc="Processing components"):
+            for batch_idx in tqdm(range(losses.shape[0]), desc="Processing batches"):
                 batch = next(self.source_data)
 
                 input_ids: Int[Tensor, Axis.names(Axis.SOURCE_DATA_BATCH, Axis.POSITION)] = batch[
                     "input_ids"
                 ].to(source_model_device)
+
+                print("Input ids shape:", input_ids.shape)
 
                 # Run a forward pass with and without the replaced activations
                 self.source_model.remove_all_hook_fns()
@@ -381,6 +383,8 @@ class Pipeline:
                     component_idx=component_idx,
                     n_components=self.n_components,
                 )
+
+                print("Running forward pass")
 
                 with torch.no_grad():
                     loss = self.source_model.forward(input_ids, return_type="loss")
@@ -407,6 +411,8 @@ class Pipeline:
                     losses_with_zero_ablation[
                         batch_idx, component_idx
                     ] = loss_with_zero_ablation.sum()
+
+                print("Losses shape:", losses.shape)
 
         # Log
         validation_data = ValidationMetricData(
