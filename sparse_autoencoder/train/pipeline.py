@@ -188,7 +188,7 @@ class Pipeline:
 
         # Setup the store
         source_model_device: torch.device = get_model_device(self.source_model)
-        print("Source model device:", source_model_device)
+        # print("Source model device:", source_model_device)
         store = TensorActivationStore(
             store_size, self.n_input_features, n_components=self.n_components
         )
@@ -232,7 +232,7 @@ class Pipeline:
         self.autoencoder = self.autoencoder.to(device='cuda')
         autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
-        print("Autoencoder device:", autoencoder_device)
+        # print("Autoencoder device:", autoencoder_device)
 
         activations_dataloader = DataLoader(
             activation_store,
@@ -247,7 +247,7 @@ class Pipeline:
             device=torch.device("cpu"),
         )
 
-        print("Starting training loop")
+        # print("Starting training loop")
 
         for store_batch in tqdm(activations_dataloader):
             # Zero the gradients
