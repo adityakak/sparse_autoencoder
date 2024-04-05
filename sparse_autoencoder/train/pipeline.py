@@ -365,7 +365,9 @@ class Pipeline:
             Tensor, Axis.names(Axis.ITEMS, Axis.COMPONENT)
         ] = torch.empty(losses_shape, device=source_model_device)
 
+        print("Components:", len(self.cache_names))
         for component_idx, cache_name in tqdm(enumerate(self.cache_names), desc="Processing components"):
+            print("Batches:", len(losses.shape[0]))
             for batch_idx in tqdm(range(losses.shape[0]), desc="Processing batches"):
                 batch = next(self.source_data)
 
@@ -373,7 +375,7 @@ class Pipeline:
                     "input_ids"
                 ].to(source_model_device)
 
-                print("Input ids shape:", input_ids.shape)
+                # print("Input ids shape:", input_ids.shape)
 
                 # Run a forward pass with and without the replaced activations
                 self.source_model.remove_all_hook_fns()
@@ -384,7 +386,7 @@ class Pipeline:
                     n_components=self.n_components,
                 )
 
-                print("Running forward pass")
+                # print("Running forward pass")
 
                 with torch.no_grad():
                     loss = self.source_model.forward(input_ids, return_type="loss")
@@ -412,7 +414,7 @@ class Pipeline:
                         batch_idx, component_idx
                     ] = loss_with_zero_ablation.sum()
 
-                print("Losses shape:", losses.shape)
+                # print("Losses shape:", losses.shape)
 
         # Log
         validation_data = ValidationMetricData(
