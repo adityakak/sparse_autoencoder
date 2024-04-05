@@ -228,6 +228,7 @@ class Pipeline:
         Returns:
             Number of times each neuron fired, for each component.
         """
+        self.autoencoder = self.autoencoder.to(device='cuda')
         autoencoder_device: torch.device = get_model_device(self.autoencoder)
 
         print("Autoencoder device:", autoencoder_device)
@@ -237,7 +238,6 @@ class Pipeline:
             batch_size=train_batch_size,
         )
         
-        print("DataLoader created")
 
         learned_activations_fired_count: Int64[
             Tensor, Axis.names(Axis.COMPONENT, Axis.LEARNT_FEATURE)
