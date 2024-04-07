@@ -67,7 +67,7 @@ def setup_source_model(hyperparameters: RuntimeHyperparameters) -> HookedTransfo
     return HookedTransformer.from_pretrained(
         hyperparameters["source_model"]["name"],
         dtype=hyperparameters["source_model"]["dtype"],
-        n_devices=4,
+        n_devices=3,
     )
 
 
