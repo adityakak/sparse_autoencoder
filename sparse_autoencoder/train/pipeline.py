@@ -256,6 +256,8 @@ class Pipeline:
             # Move the batch to the device (in place)
             batch = store_batch.detach().to(autoencoder_device)
 
+            print(batch)
+            print(batch.shape)
             # Forward pass
             learned_activations, reconstructed_activations = self.autoencoder.forward(batch)
 
